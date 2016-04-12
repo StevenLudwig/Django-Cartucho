@@ -16,14 +16,13 @@ WSGI_DIR = os.path.dirname(BASE_DIR)
 REPO_DIR = os.path.dirname(WSGI_DIR)
 DATA_DIR = os.environ.get('OPENSHIFT_DATA_DIR', BASE_DIR)
 
-BASE_DIRECTORIO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-
 import sys
 sys.path.append(os.path.join(REPO_DIR, 'libs'))
 import secrets
 SECRETS = secrets.getter(os.path.join(DATA_DIR, 'secrets.json'))
+
 # Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = SECRETS['secret_key']
@@ -39,7 +38,9 @@ ALLOWED_HOSTS = [
     #'www.example.com', # Second DNS alias (set up in the app)
 ]
 
+
 # Application definition
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,11 +50,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
-    #'whitenoise.middleware.WhiteNoiseMiddleware',  # Para static files IN APP
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',  # Lo cambiamos aqui
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,7 +68,7 @@ ROOT_URLCONF = 'myproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['%s/templates/' % (PROJECT_DIR), ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,8 +76,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.i18n',
-                # add this processor- Habilitalo para i18n en Templates
             ],
         },
     },
@@ -97,53 +95,18 @@ DATABASES = {
     }
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
-
 # Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/---------------------------
+# https://docs.djangoproject.com/en/1.8/topics/i18n/
+
+LANGUAGE_CODE = 'es-MX'
+
+TIME_ZONE = 'UTC'
+
 USE_I18N = True
 
 USE_L10N = True
 
-LANGUAGE_CODE = 'es-MX'
-#LANGUAGE_CODE = 'en'
-#Lenguaje preestablecido
-
-ugettext = lambda s: s  # Funcion simuladora
-#Lenguaje preferido por el usuario actual
-LANGUAGES = (
-    ('es', ugettext('Spanish')),
-    ('en', ugettext('English')),
-    ('fr', ugettext('French')),
-)
-
-# Definimos la ruta de los archivos de idiomas
-LOCALE_PATHS = (
-    os.path.join(BASE_DIRECTORIO, 'locale'),
-)
-#Para crear los archivos de los mensajes de traduccion usa
-# django-admin.py makemessages -l en ...
-#para crear los archivos que estaran en ingles
-#Este comando debe ser ejecutado dentro de tu carpeta base de tu proyecto
-#Despues ejecuta django-admin.py compilemessages
-#para compilar los archivos de traduccion ya modificados
-#Es en la misma carpeta como el comando anterior
-
-
-TIME_ZONE = 'America/Mexico_City'
-#TIME_ZONE = 'America/Chicago'
-#zona horaria
-
 USE_TZ = True
-#------------------------------------------------------------------------------
 
 
 # Static files (CSS, JavaScript, Images)
